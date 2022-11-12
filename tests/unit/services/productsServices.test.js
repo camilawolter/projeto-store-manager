@@ -6,7 +6,9 @@ const productsModel = require('../../../src/models/products.model');
 
 const { allProductsResponse } = require('../../../__tests__/_dataMock');
 
-describe('Validando funcionamento do modeldos produtos', function () {
+const validName = require('../../../src/middlewares/validateProducts');
+
+describe('Validando funcionamento do services dos produtos', function () {
   afterEach(sinon.restore);
   it('Listagem completa dos produtos', async function () {
     sinon.stub(productsModel, 'listAllProducts').resolves(allProductsResponse);
@@ -21,5 +23,21 @@ describe('Validando funcionamento do modeldos produtos', function () {
     const result = await productsService.listProductById(1);
     expect(result.type).to.equal(null);
     expect(result.message).to.be.deep.equal(allProductsResponse[0]);
+  });
+
+  it('Retorna um erro caso receba um ID inválido', async function () {
+    const result = await productsService.listProductById(10);
+
+    expect(result.type).to.equal(404);
+  });
+
+  it('Retorna o ID do novo produto cadastrado', async function () {
+    sinon.stub(productsModel, 'createProduct').resolves()([{ insertId: 1 }]);
+    sinon.stub(productsModel, 'listProductById').resolves(allProductsResponse[0]);
+
+    const result = await productsService.createProduct(validName);
+
+    expect(result.type).to.equal(null);
+    expect(result.message).to.deep.equal(allProductsResponse[0]);
   });
 });
