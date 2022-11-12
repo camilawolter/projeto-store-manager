@@ -11,7 +11,15 @@ const listProductById = async (productsID) => {
   return { type: 404, message: { message: 'Product not found' } };
 };
 
+const createProduct = async (product) => {
+  const newIdProduct = await productsModel.createProduct(product);
+  const newProduct = await productsModel.listProductById(newIdProduct);
+
+  return { type: null, message: newProduct };
+};
+
 module.exports = {
   listAllProducts,
   listProductById,
+  createProduct,
 };
