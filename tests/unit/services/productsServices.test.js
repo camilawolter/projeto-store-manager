@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const productsService = require('../../../src/services/products.service');
 const productsModel = require('../../../src/models/products.model');
 
-const { allProductsResponse } = require('../../../__tests__/_dataMock');
+const { allProductsResponse, productSearchNameResponse, productUpdateBody } = require('../../../__tests__/_dataMock');
 
 const validName = require('../../../src/middlewares/validateProducts');
 
@@ -39,5 +39,14 @@ describe('Validando funcionamento do services dos produtos', function () {
 
     expect(result.type).to.equal(null);
     expect(result.message).to.deep.equal(allProductsResponse[0]);
+  });
+
+  it('Atualiza um produto já existente', async function () {
+    sinon.stub(productsModel, 'listProductById').resolves(productSearchNameResponse);
+    sinon.stub(productsModel, 'updateProduct').resolves();
+
+    const result = await productsService.updateProduct(1, productUpdateBody);
+
+    expect(result.message).to.deep.equal({ id: 1, name: productUpdateBody });
   });
 });
