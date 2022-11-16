@@ -83,4 +83,22 @@ describe('Validando funcionamento do controller dos produtos', function () {
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(productUpdateBody);
   });
+
+  it('Deleta um produto', async function () {
+    const res = {};
+    const req = {
+      params: {id: 1}
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    res.end = sinon.stub().returns();
+
+    sinon.stub(productsService, 'deleteProduct')
+      .resolves({ type: null, message: null });
+
+    await productsController.deleteProduct(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+  });
 });

@@ -49,4 +49,13 @@ describe('Validando funcionamento do services dos produtos', function () {
 
     expect(result.message).to.deep.equal({ id: 1, name: productUpdateBody });
   });
+
+  it('Deleta um produto', async function () {
+    sinon.stub(productsModel, 'listProductById').resolves(productSearchNameResponse);
+    sinon.stub(productsModel, 'deleteProduct').resolves();
+
+    const result = await productsService.deleteProduct(1);
+
+    expect(result.type).to.equal(null);
+  });
 });
