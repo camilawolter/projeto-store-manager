@@ -33,10 +33,18 @@ const deleteProduct = async (product) => connection.execute(
   [product],
 );
 
+const searchProductName = async (nameProduct) => {
+  const allProducts = await listAllProducts();
+  const filterProductsName = allProducts.filter((product) => product.name.includes(nameProduct));
+  if (!filterProductsName) return allProducts;
+  return filterProductsName;
+};
+
 module.exports = {
   listAllProducts,
   listProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProductName,
 };
