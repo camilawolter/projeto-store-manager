@@ -46,4 +46,22 @@ describe('Validando funcionamento do controller das vendas', function () {
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(rightSaleBody);
   });
+
+  it('Deleta uma venda', async function () {
+    const res = {};
+    const req = {
+      params: { id: 1 }
+    };
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    res.end = sinon.stub().returns();
+
+    sinon.stub(salesService, 'deleteSale')
+      .resolves({ type: null, message: null });
+
+    await salesController.deleteSale(req, res);
+
+    expect(res.status).to.have.been.calledWith(204);
+  });
 });

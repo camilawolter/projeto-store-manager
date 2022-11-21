@@ -29,4 +29,13 @@ describe('Validando funcionamento do services das vendas', function () {
 
     expect(result.type).to.equal(404);
   });
+
+  it('Deleta uma venda', async function () {
+    sinon.stub(salesModel, 'listSalesById').resolves(rightSaleBody[0]);
+    sinon.stub(salesModel, 'deleteSale').resolves();
+
+    const result = await salesService.deleteSale(1);
+
+    expect(result.type).to.equal(null);
+  });
 });
